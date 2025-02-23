@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {
   deleteReview,
-  deleteReviewImage,
+  // deleteReviewImage,
   getAllProducts,
   getSingleProduct,
   sendReview,
@@ -27,5 +27,5 @@ router.delete("/review/:reviewId", isLoggedIn, deleteReview);
 router.patch("/review/:reviewId", isLoggedIn, upload.array("images", 3));
 
 // Delete a specific reviewImage
-router.delete("/review/image/:imageId", isLoggedIn, deleteReviewImage);
+// router.delete("/review/image/:imageId", isLoggedIn, deleteReviewImage);
 export default router;
