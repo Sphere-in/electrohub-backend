@@ -12,7 +12,6 @@ import categoryRoutes from "./routes/cms/category.js";
 import bannerCarouselRoutes from "./routes/cms/bannerCarousel.js";
 import productCarouselRoutes from "./routes/cms/productCarousel.js";
 import passport from "passport";
-
 config();
 
 const port = 8000;
