@@ -180,24 +180,24 @@ async function deleteReview(req: Request, res: Response) {
       return;
     }
 
-    const reviewImages = await db.reviewImage.findMany({
-      where: {
-        reviewId: parsedReviewId,
-      },
-    });
+    // const reviewImages = await db.reviewImage.findMany({
+    //   where: {
+    //     reviewId: parsedReviewId,
+    //   },
+    // });
 
-    if (reviewImages.length > 0) {
-      for (const image of reviewImages) {
-        const imagePublicId = extractPublicId(image.url);
-        await cloudinary.uploader.destroy(imagePublicId);
-      }
+    // if (reviewImages.length > 0) {
+    //   for (const image of reviewImages) {
+    //     const imagePublicId = extractPublicId(image.url);
+    //     await cloudinary.uploader.destroy(imagePublicId);
+    //   }
 
-      await db.reviewImage.deleteMany({
-        where: {
-          reviewId: parsedReviewId,
-        },
-      });
-    }
+    //   await db.reviewImage.deleteMany({
+    //     where: {
+    //       reviewId: parsedReviewId,
+    //     },
+    //   });
+    // }
 
     await db.review.delete({
       where: {
@@ -244,15 +244,15 @@ async function updateReveiw(req: Request, res: Response) {
       return;
     }
 
-    const review = await db.review.findUnique({
-      where: { id: ReviewId },
-      include: { ReviewImage: true },
-    });
+    // const review = await db.review.findUnique({
+    //   where: { id: ReviewId },
+    //   include: { ReviewImage: true },
+    // });
 
-    if (!review) {
-      res.status(404).json({ error: "Review not found." });
-      return;
-    }
+    // if (!review) {
+    //   res.status(404).json({ error: "Review not found." });
+    //   return;
+    // }
 
     const validatedData: ReviewUpdateType = await reveiewUpdateSchema.parse(
       req.body
@@ -273,27 +273,27 @@ async function updateReveiw(req: Request, res: Response) {
       })
     );
 
-    await Promise.all(
-      newImageUrls.map(async (url) => {
-        await db.reviewImage.create({
-          data: {
-            url,
-            reviewId: ReviewId,
-          },
-        });
-      })
-    );
+    // await Promise.all(
+    //   newImageUrls.map(async (url) => {
+    //     await db.reviewImage.create({
+    //       data: {
+    //         url,
+    //         reviewId: ReviewId,
+    //       },
+    //     });
+    //   })
+    // );
 
-    const updatedReview = await db.review.update({
-      where: { id: ReviewId },
-      data: updatedReviewData,
-      include: { ReviewImage: true },
-    });
+    // const updatedReview = await db.review.update({
+    //   where: { id: ReviewId },
+    //   data: updatedReviewData,
+    //   include: { ReviewImage: true },
+    // });
 
-    res.status(200).json({
-      message: "Review updated successfully.",
-      product: updatedReview,
-    });
+    // res.status(200).json({
+    //   message: "Review updated successfully.",
+    //   product: updatedReview,
+    // });
   } catch (error: any) {
     console.error("ERROR_WHILE_UPDATING_REVIEW", error);
     res.status(500).json({
@@ -304,40 +304,40 @@ async function updateReveiw(req: Request, res: Response) {
 }
 
 // Delete a single review image
-async function deleteReviewImage(req: Request, res: Response) {
-  try {
-    const { imageId } = req.params;
-    const image = await db.reviewImage.findUnique({
-      where: { id: parseInt(imageId, 10) },
-    });
+// async function deleteReviewImage(req: Request, res: Response) {
+//   try {
+//     const { imageId } = req.params;
+//     const image = await db.reviewImage.findUnique({
+//       where: { id: parseInt(imageId, 10) },
+//     });
 
-    if (!image) {
-      res.status(404).json({ error: "Image not found." });
-      return;
-    }
+//     if (!image) {
+//       res.status(404).json({ error: "Image not found." });
+//       return;
+//     }
 
-    const imagePublicId = extractPublicId(image.url);
-    await cloudinary.uploader.destroy(
-      `${process.env.PRODUCT_FOLDER}/${imagePublicId}`
-    );
+//     const imagePublicId = extractPublicId(image.url);
+//     await cloudinary.uploader.destroy(
+//       `${process.env.PRODUCT_FOLDER}/${imagePublicId}`
+//     );
 
-    await db.reviewImage.delete({ where: { id: image.id } });
+//     await db.reviewImage.delete({ where: { id: image.id } });
 
-    res.status(200).json({ message: "Review image deleted successfully." });
-  } catch (error: any) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ error: "Internal Server Error", details: error.message });
-    return;
-  }
-}
+//     res.status(200).json({ message: "Review image deleted successfully." });
+//   } catch (error: any) {
+//     console.log(error);
+//     res
+//       .status(500)
+//       .json({ error: "Internal Server Error", details: error.message });
+//     return;
+//   }
+// }
 
 export {
   getAllProducts,
   sendReview,
   deleteReview,
   updateReveiw,
-  deleteReviewImage,
+  // deleteReviewImage,
   getSingleProduct,
 };
