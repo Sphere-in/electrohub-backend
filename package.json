@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node dist/app.js",
     "dev": "concurrently \"npx tsc -w\" \"nodemon dist/app.js\"",
-    "build": "tsc"
+    "build": "tsc && prisma generate",
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "",
