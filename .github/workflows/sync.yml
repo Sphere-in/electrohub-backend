@@ -1,0 +1,19 @@
+name: Sync Fork
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Runs every hour
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Sync with upstream
+        run: |
+          git remote add upstream https://github.com/aquibk580/electrohub-backend.git
+          git fetch upstream
+          git merge upstream/main --allow-unrelated-histories -m "Sync from upstream"
+          git push origin main
